@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('father_name')->nullable();
+            $table->string('pf_no', 10)->nullable();
+            $table->enum('gender', ['m', 'f', '0'])->nullable();
             $table->date('date_of_birth')->nullable();
             $table->date('date_of_joining')->nullable();
             $table->integer('branch_id')->nullable();
@@ -35,8 +37,10 @@ return new class extends Migration
             $table->decimal('insentive_percentage', 10, 2)->nullable();
             $table->decimal('pay_band', 10, 2)->nullable();
             $table->decimal('g_pay', 10, 2)->nullable();
+            $table->string('profile_image')->nullable();
             $table->date('expiry_date')->nullable();
             $table->string('timezone', 100)->nullable();
+            $table->integer('reporting_to', 11)->nullable();
             $table->enum('is_active', ['0','1'])->default('1');
             $table->integer('created_by')->nullable();
             $table->date('deactive_date')->nullable();
