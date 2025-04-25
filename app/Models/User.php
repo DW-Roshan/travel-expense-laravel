@@ -68,4 +68,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
+    }
+    public function division()
+    {
+        return $this->belongsTo(Division::class, 'division_id');
+    }
+    public function designation()
+    {
+        return $this->belongsTo(Designation::class, 'designation_id');
+    }
+    public function stationHeadQuarter()
+    {
+        return $this->belongsTo(Station::class, 'station_head_quarter_id');
+    }
 }

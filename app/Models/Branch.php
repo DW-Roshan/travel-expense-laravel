@@ -14,4 +14,9 @@ class Branch extends Model
         'short',
         'is_active'
     ];
+
+    // public function users()
+    // {
+    //     return $this->hasMany(User::class);
+    // }
 }

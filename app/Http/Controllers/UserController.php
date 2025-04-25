@@ -14,6 +14,22 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+
+    public function index()
+    {
+        try{
+
+            $users = User::where('user_type', 'U')->with(['branch:id,branch_name', 'division:id,division_name', 'designation:id,designation_name', 'stationHeadQuarter:id,station_name'])->get();
+            return response()->json($users);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong.',
+                'throws' => $th
+            ], 500);
+        }
+    }
+
     public function addUser()
     {
         $branches = Branch::where('is_active', 1)->select('id', 'branch_name')->get();
@@ -33,11 +49,11 @@ class UserController extends Controller
     {
 
         $validator = Validator::make($request->all(),[
-            'firstName' => 'required|string',
-            'lastName' => 'required|string',
-            'email' => 'required|email|unique:users,email',
-            'username' => 'required|alpha_num:ascii|unique:users,username',
-            'password' => 'required|confirmed|string|min:6',
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email|max:255',
+            'username' => 'required|alpha_num:ascii|unique:users,username|max:20',
+            'password' => 'required|confirmed|string|min:6|max:20',
             'branch' => 'required|exists:branches,id',
             'division' => 'required|exists:divisions,id',
             'designation' => 'required|exists:designations,id',
@@ -45,9 +61,9 @@ class UserController extends Controller
             'dateOfBirth' => 'required|date',
             'dateOfJoining' => 'required|date',
             'loginValidUpto' => 'required|date',
-            'phoneNumber' => 'required|string',
-            'payBand' => 'required|string',
-            'gPay' => 'required|string'
+            'phoneNumber' => 'required|string|max:15',
+            'payBand' => 'required|string|max:10',
+            'gPay' => 'required|string|max:10'
         ]);
 
         if($validator->fails()){
