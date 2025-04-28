@@ -42,6 +42,11 @@ Route::middleware('auth:api')->group( function() {
             return $request->user();
         });
         Route::get('/traveling-allowances', [TravelingAllowanceController::class, 'index']);
+        Route::get('/traveling-allowances/add', [TravelingAllowanceController::class, 'create']);
+        Route::post('/traveling-allowances/store', [TravelingAllowanceController::class, 'store']);
+        Route::get('/traveling-allowances/{id}', [TravelingAllowanceController::class, 'show']);
+        Route::put('/traveling-allowances/{id}', [TravelingAllowanceController::class, 'update']);
+        Route::delete('/traveling-allowances/{id}', [TravelingAllowanceController::class, 'destroy']);
     });
 
 });

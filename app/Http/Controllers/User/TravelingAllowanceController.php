@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Station;
+use App\Models\Train;
 use Illuminate\Http\Request;
 
 class TravelingAllowanceController extends Controller
@@ -16,8 +18,15 @@ class TravelingAllowanceController extends Controller
 
     public function create()
     {
+
+        $trains = Train::all();
+        $stations = Station::all();
+
+
         return response()->json([
-            'message' => 'Create Traveling Allowance'
+            'message' => 'Create Traveling Allowance',
+            'trains' => $trains,
+            'stations' => $stations,
         ]);
     }
 
