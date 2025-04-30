@@ -32,6 +32,8 @@ class TravelingAllowanceController extends Controller
 
     public function store(Request $request)
     {
+        
+
         return response()->json([
             'message' => 'Store Traveling Allowance'
         ]);
