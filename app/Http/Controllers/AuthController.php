@@ -21,6 +21,11 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
+        // Check if account is expired
+        if ($user->expiry_date && now()->greaterThan($user->expiry_date)) {
+            return response()->json(['message' => 'Account expired'], 403);
+        }
+
         $token = $user->createToken('tteportal')->accessToken;
 
         return response()->json(['token' => $token, 'user_type' => $user->user_type, 'name' => $user->first_name." ".$user->last_name, 'email' => $user->email]);
