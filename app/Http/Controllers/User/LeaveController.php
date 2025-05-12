@@ -4,18 +4,33 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Leave;
+use App\Models\TravelingAllowance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class LeaveController extends Controller
 {
     public function index()
     {
-        $leaves = Leave::where('created_by', auth()->user()->id)->orderBy('from_date', 'desc')->get();
+        $userId = Auth::id();
+        $leaves = Leave::where('created_by', $userId)->orderBy('from_date', 'desc')->get();
+        $dates = TravelingAllowance::where('created_by', $userId)
+            ->select('from_date', 'arrived_date')
+            ->get()
+            ->flatMap(function ($item) {
+                return [
+                    Carbon::parse($item->from_date)->toDateString(),
+                    Carbon::parse($item->arrived_date)->toDateString(),
+                ];
+            })
+            ->unique()
+            ->values();
 
         return response()->json([
             'leaves' => $leaves,
+            'removeDates' => $dates
         ]);
     }
 

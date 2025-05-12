@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Leave;
 use App\Models\Station;
 use App\Models\Train;
 use App\Models\TravelingAllowance;
 use App\Models\TravellingAllowance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class TravelingAllowanceController extends Controller
@@ -16,25 +18,45 @@ class TravelingAllowanceController extends Controller
     public function index()
     {
 
-        $travelingAllowances = TravelingAllowance::where('created_by', auth()->user()->id)
-        ->with(['train:id,train_name,train_no', 'fromStation:id,station_name', 'toStation:id,station_name'])
-        ->orderBy('from_date', 'desc')
-        ->get()
-        ->groupBy(fn($item) => Carbon::parse($item->from_date)->toDateString())
-        ->map(fn($group, $date) => ['from_date' => $date, 'travel_data' => $group])
-        ->values();
+        try {
+            $travelingAllowances = TravelingAllowance::where('created_by', auth()->user()->id)
+            ->with(['train:id,train_name,train_no', 'fromStation:id,station_name', 'toStation:id,station_name'])
+            ->orderBy('from_date', 'desc')
+            ->get()
+            ->groupBy(fn($item) => Carbon::parse($item->from_date)->toDateString())
+            ->map(fn($group, $date) => ['from_date' => $date, 'travel_data' => $group])
+            ->values();
 
-        return response()->json([
-            'message' => 'Traveling Allowance List',
-            'data' => $travelingAllowances,
-        ]);
+            return response()->json([
+                'message' => 'Traveling Allowance List',
+                'data' => $travelingAllowances,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Some error',
+                'data' => [],
+                'error' => $e
+            ]);
+        }
     }
 
     public function create()
     {
-
+        $userId = Auth::id();
         $trains = Train::all();
         $stations = Station::all();
+
+        $dates = Leave::where('created_by', $userId)
+            ->select('from_date', 'to_date')
+            ->get()
+            ->flatMap(function ($item) {
+                return [
+                    Carbon::parse($item->from_date)->toDateString(),
+                    Carbon::parse($item->to_date)->toDateString(),
+                ];
+            })
+            ->unique()
+            ->values();
 
 
         return response()->json([
