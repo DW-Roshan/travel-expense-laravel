@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\User\LeaveController;
 use App\Http\Controllers\User\TravelingAllowanceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -47,6 +48,10 @@ Route::middleware('auth:api')->group( function() {
         Route::get('/traveling-allowances/{id}', [TravelingAllowanceController::class, 'show']);
         Route::put('/traveling-allowances/{id}', [TravelingAllowanceController::class, 'update']);
         Route::delete('/traveling-allowances/{id}', [TravelingAllowanceController::class, 'destroy']);
+
+        Route::get('/leaves', [LeaveController::class, 'index']);
+        Route::post('/leaves/store', [LeaveController::class, 'store']);
+        Route::put('/leaves/{id}', [LeaveController::class, 'update']);
     });
 
 });
