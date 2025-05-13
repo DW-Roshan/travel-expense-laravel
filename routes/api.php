@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\User\LeaveController;
+use App\Http\Controllers\User\MovementReportController;
 use App\Http\Controllers\User\TravelingAllowanceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -52,6 +53,8 @@ Route::middleware('auth:api')->group( function() {
         Route::get('/leaves', [LeaveController::class, 'index']);
         Route::post('/leaves/store', [LeaveController::class, 'store']);
         Route::put('/leaves/{id}', [LeaveController::class, 'update']);
+
+        Route::get('/movement-reports', [MovementReportController::class, 'index']);
     });
 
 });

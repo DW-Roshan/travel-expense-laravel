@@ -63,6 +63,7 @@ class TravelingAllowanceController extends Controller
             'message' => 'Create Traveling Allowance',
             'trains' => $trains,
             'stations' => $stations,
+            'removeDates' => $dates
         ]);
     }
 
