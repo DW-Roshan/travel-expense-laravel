@@ -28,7 +28,7 @@ class AuthController extends Controller
 
         $token = $user->createToken('tteportal')->accessToken;
 
-        return response()->json(['token' => $token, 'user_type' => $user->user_type, 'name' => $user->first_name." ".$user->last_name, 'email' => $user->email]);
+        return response()->json(['token' => $token, 'id' => $user->id, 'user_type' => $user->user_type, 'username' => $user->username, 'name' => $user->first_name." ".$user->last_name, 'email' => $user->email]);
     }
 
     public function logout(Request $request)
