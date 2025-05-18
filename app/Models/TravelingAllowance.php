@@ -27,7 +27,7 @@ class TravelingAllowance extends Model
 
     protected $casts = [
         'departure_date' => 'datetime',
-        'arrived_date' => 'datetime',
+        // 'arrived_date' => 'datetime',
     ];
 
     public function train()

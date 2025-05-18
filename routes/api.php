@@ -55,6 +55,9 @@ Route::middleware('auth:api')->group( function() {
         Route::put('/leaves/{id}', [LeaveController::class, 'update']);
 
         Route::get('/movement-reports', [MovementReportController::class, 'index']);
+
+        Route::get('/mr', [MovementReportController::class, 'getMR']);
+        Route::get('/report', [MovementReportController::class, 'reportMR']);
     });
 
 });
